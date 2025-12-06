@@ -94,7 +94,7 @@ bayes_noiseaware <- function(
   )
   
   ## Reconstruct p×p matrix for Stan
-  noisy_mat <- .bn_reconstruct_matrix_from_pairs(noisy_pairvals)
+  noisy_mat <- .reconstruct_matrix_from_pairs(noisy_pairvals, diag_value = 1)
   
   ## Stan uses -1 to mark unavailable (lower-triangular entries)
   noisy_mat[lower.tri(noisy_mat, diag = TRUE)] <- -1
@@ -276,7 +276,7 @@ mle_noise_naive <- function(
   names(raw_corr) <- names(noisy_counts)
   
   ## Reconstruct full correlation matrix
-  corr_mat <- .bn_reconstruct_matrix_from_pairs(raw_corr)
+  corr_mat <- .reconstruct_matrix_from_pairs(raw_corr, diag_value = 1)
   diag(corr_mat) <- 1
   
   ## Enforce positive semidefiniteness
