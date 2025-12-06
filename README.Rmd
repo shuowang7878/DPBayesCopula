@@ -1,39 +1,50 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  eval = FALSE
+)
+```
+
 # DPCopula
 
-`DPCopula` provides differentially private copula-based correlation
-estimation via two estimators:
+`DPCopula` provides differentially private copula-based correlation estimation
+via two estimators:
 
-- **Bayesian noise-aware (Bayes-NA)**: explicitly accounts for
-  differential privacy noise through a Bayesian model fitted in Stan.
-- **MLE noise-naive (MLE-NN)**: treats range-preserving noisy counts as
-  if they were true statistics and estimates correlation matrix via a
-  likelihood-based approach.
+- **Bayesian noise-aware (Bayes-NA)**: explicitly accounts for differential 
+  privacy noise through a Bayesian model fitted in Stan.
+- **MLE noise-naive (MLE-NN)**: treats range-preserving noisy counts as if they 
+  were true statistics and estimates correlation matrix via a likelihood-based approach.
 
 ## Installation
 
-You can install the development version of DPCopula from
-[GitHub](https://github.com/) with:
+You can install the development version of DPCopula from [GitHub](https://github.com/) with:
 
 ### Option 1: Using `remotes` (recommended for most users)
 
-``` r
+```{r}
 # install.packages("remotes")
 remotes::install_github("shuowang7878/DPCopula")
 ```
 
 ### Option 2: Using `pak` (faster dependency resolution)
 
-``` r
+```{r}
 # install.packages("pak")
 pak::pak("shuowang7878/DPCopula")
 ```
 
 Then load the package:
 
-``` r
+```{r}
 library(DPCopula)
 ```
 
@@ -41,7 +52,7 @@ library(DPCopula)
 
 ### Bayesian noise-aware estimator
 
-``` r
+```{r Bayes-NA-example}
 set.seed(123)
 n  <- 200
 p  <- 3
@@ -64,7 +75,7 @@ fit_bayes$ci_upper  # 97.5% pairwise credible intervals
 
 ### MLE noise-naive estimator
 
-``` r
+```{r MLE-NN-example}
 set.seed(123)
 n  <- 200
 p  <- 3
@@ -82,7 +93,7 @@ fit_mle$estimation   # DP correlation matrix
 
 ### Range-preserving mechanisms
 
-``` r
+```{r mechanisms-example}
 counts <- c(10, 15, 20)
 noisy  <- range_preserving_mechanism(
   counts      = counts,
@@ -94,3 +105,4 @@ noisy  <- range_preserving_mechanism(
 )
 noisy
 ```
+

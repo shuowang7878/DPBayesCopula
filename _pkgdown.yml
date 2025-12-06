@@ -1,0 +1,16 @@
+url: ~
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [reference, articles]
+    right: [github]
+
+reference:
+  - title: "Main functions"
+    contents:
+      - bayes_noiseaware
+      - mle_noise_naive
+      - range_preserving_mechanism
+
