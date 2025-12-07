@@ -125,7 +125,7 @@ bayes_noiseaware <- function(
   )
   
   ## Fit Bayesian model
-  fit <- rstan::sampling(
+  fit <- sampling(
     model,
     data   = stan_data,
     warmup = iter_warmup,
@@ -136,7 +136,7 @@ bayes_noiseaware <- function(
   )
   
   ## Extract posterior draws
-  draws <- rstan::extract(fit, pars = "R")$R
+  draws <- extract(fit, pars = "R")$R
   dimnames(draws) <- list(NULL, colnames(data), colnames(data))
   
   ## Posterior summaries
