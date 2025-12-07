@@ -1,10 +1,12 @@
 #' Bayesian noise-aware differentially private Gaussian copula (Bayes-NA)
 #'
 #' This function implements the Bayesian noise-aware (Bayes-NA) estimator for
-#' a Gaussian copula correlation matrix under differential privacy. It first
-#' constructs differentially private pairwise high–high counts based on
-#' median thresholds, then fits a Bayesian latent Gaussian model in Stan to
-#' recover the correlation matrix.
+#' a Gaussian copula correlation matrix under differential privacy. Each variable 
+#' is binarized into "low" and "high" groups using the sample median with random
+#' tie-breaking so that exactly \code{ceil(n/2)} observations fall into the
+#' "high" group. Pairwise high–high counts are then perturbed using geometric
+#' mechanism. Then A Bayesian model that explicitly accounts for the injected 
+#' noise is then fitted in Stan to estimate the underlying correlation matrix.
 #'
 #' For each pair \eqn{(i, j)}, the sufficient statistic is
 #' \deqn{

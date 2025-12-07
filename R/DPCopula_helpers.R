@@ -5,8 +5,7 @@
 #' \code{(X[, j], key[, j])}. The first \code{ceiling(n/2)} rows are assigned
 #' to the `"low"` group and the remainder to `"high"`. For every variable pair
 #' \code{i < j}, the function counts the number of observations that fall into
-#' the `"high"` group for both variables. This produces a set of pairwise
-#' high–high counts used as the statistics for the DP Bayesian model.
+#' the `"high"` group for both variables.
 #'
 #' @param data Numeric data.frame or matrix.
 #' @return Named numeric vector of pairwise high–high counts.
