@@ -18,7 +18,6 @@ independent of the data. Observations are ordered lexicographically by
 \code{(X[, j], key[, j])}. The first \code{ceiling(n/2)} rows are assigned
 to the \code{"low"} group and the remainder to \code{"high"}. For every variable pair
 \code{i < j}, the function counts the number of observations that fall into
-the \code{"high"} group for both variables. This produces a set of pairwise
-high–high counts used as the statistics for the DP Bayesian model.
+the \code{"high"} group for both variables.
 }
 \keyword{internal}

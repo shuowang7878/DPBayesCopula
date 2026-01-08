@@ -1,14 +1,14 @@
-#' Range-preserving mechanisms for counts
+#' Truncated geometric mechanisms for counts
 #'
-#' Applies one of three range-preserving mechanisms to a numeric vector of
+#' Applies one of three truncated geometric mechanisms to a numeric vector of
 #' counts. Each coordinate \code{i} has its own valid integer range
 #' \code{[lower_i, upper_i]}, sensitivity \code{Delta_i}, and privacy budget
 #' \code{epsilon_i}. 
 #' 
 #' The following mechanisms are implemented:
 #' \describe{
-#'   \item{\code{"RTG"}}{Renormalized geometric mechanism. A renormalized geometric
-#'     distribution on \code{lower_i,...,upper_i} is used, with the
+#'   \item{\code{"RTG"}}{Renormalized truncated geometric mechanism. A renormalized
+#'     geometric distribution on \code{lower_i,...,upper_i} is used, with the
 #'     privacy-adjusted geometric parameter obtained by solving a root
 #'     equation.}
 #'
@@ -17,7 +17,7 @@
 #'     the resulting value is truncated to the valid range
 #'     \code{lower_i,...,upper_i}.}
 #'
-#'   \item{\code{"BTGM"}}{Bayesian inspired truncated geometric mechanism.
+#'   \item{\code{"BTGM"}}{Bayesian-inspired truncated geometric mechanism.
 #'     Noise is first added to each count using a geometric mechanism,
 #'     followed by a Bayesian-type posterior expectation
 #'     estimator under a uniform prior on \code{lower_i,...,upper_i}.
@@ -47,16 +47,28 @@
 #' @return A numeric vector of perturbed counts with the same length and names
 #'   as \code{counts}.
 #'
+#' @examples
+#' counts <- c(10, 15, 20)
+#' noisy  <- truncated_geometric_mechanism(
+#'   counts        = counts,
+#'   n             = 50,
+#'   total_epsilon = 1,
+#'   sensitivity   = 1,
+#'   method        = "BTGM",
+#'   round_output  = TRUE
+#' )
+#' noisy
+#'
 #' @export
-range_preserving_mechanism <- function(counts,
-                                       n = NULL,
-                                       total_epsilon = NULL,
-                                       epsilon = NULL,
-                                       sensitivity,
-                                       method = c("RTG", "TGM", "BTGM"),
-                                       lower = NULL,
-                                       upper = NULL,
-                                       round_output = FALSE) {
+truncated_geometric_mechanism <- function(counts,
+                                          n = NULL,
+                                          total_epsilon = NULL,
+                                          epsilon = NULL,
+                                          sensitivity,
+                                          method = c("RTG", "TGM", "BTGM"),
+                                          lower = NULL,
+                                          upper = NULL,
+                                          round_output = FALSE) {
   ## Basic checks on counts
   if (!is.numeric(counts)) {
     stop("`counts` must be a numeric vector.", call. = FALSE)

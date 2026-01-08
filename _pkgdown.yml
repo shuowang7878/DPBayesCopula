@@ -12,5 +12,5 @@ reference:
     contents:
       - bayes_noiseaware
       - mle_noise_naive
-      - range_preserving_mechanism
+      - truncated_geometric_mechanism
 

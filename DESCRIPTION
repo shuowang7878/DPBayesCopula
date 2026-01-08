@@ -1,15 +1,17 @@
-Package: DPCopula
+Package: DPBayesCopula
 Type: Package
-Title: Differentially Private Copula Correlation Estimation via Bayesian Noise-Aware and MLE Noise-Naive Methods
+Title: Differentially Private Bayesian Inference for Gaussian Copula Correlations
 Version: 0.1.0
-Authors@R: 
-    person("Shuo", "Wang", 
-           email = "maintainer@example.com",
+Authors@R:
+    person("Shuo", "Wang",
+           email = "wangshuo6778@gmail.com",
            role = c("aut", "cre"))
-Description: 
-    Provides differentially private copula-based correlation estimation using two complementary approaches: 
-    a Bayesian noise-aware method implemented via Stan and a maximum-likelihood noise-naive method. The 
-    package also includes range-preserving post-processing mechanisms, helper utilities for copula modeling, 
+Author: Shuo Wang [aut, cre]
+Maintainer: Shuo Wang <wangshuo6778@gmail.com>
+Description:
+    Provides differentially private copula-based correlation estimation using two complementary approaches:
+    a Bayesian noise-aware method implemented via Stan and a maximum-likelihood noise-naive method. The
+    package also includes truncated geometric post-processing mechanisms, helper utilities for copula modeling,
     and tools for integrating privacy noise into correlation estimation workflows.
 License: MIT + file LICENSE
 Encoding: UTF-8

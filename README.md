@@ -1,40 +1,40 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DPCopula
+# DPBayesCopula
 
-`DPCopula` provides differentially private copula-based correlation
+`DPBayesCopula` provides differentially private copula-based correlation
 estimation via two estimators:
 
 - **Bayesian noise-aware (Bayes-NA)**: explicitly accounts for
   differential privacy noise through a Bayesian model fitted in Stan.
-- **MLE noise-naive (MLE-NN)**: treats range-preserving noisy counts as
-  if they were true statistics and estimates correlation matrix via a
-  likelihood-based approach.
+- **MLE noise-naive (MLE-NN)**: treats noisy counts from truncated
+  geometric mechanisms as if they were true statistics and estimates
+  correlation matrix via a likelihood-based approach.
 
 ## Installation
 
-You can install the development version of DPCopula from
+You can install the development version of DPBayesCopula from
 [GitHub](https://github.com/) with:
 
 ### Option 1: Using `remotes` (recommended for most users)
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("shuowang7878/DPCopula")
+remotes::install_github("shuowang7878/DPBayesCopula")
 ```
 
 ### Option 2: Using `pak` (faster dependency resolution)
 
 ``` r
 # install.packages("pak")
-pak::pak("shuowang7878/DPCopula")
+pak::pak("shuowang7878/DPBayesCopula")
 ```
 
 Then load the package:
 
 ``` r
-library(DPCopula)
+library(DPBayesCopula)
 ```
 
 ## Example
@@ -80,11 +80,11 @@ fit_mle <- mle_noise_naive(
 fit_mle$estimation   # DP correlation matrix
 ```
 
-### Range-preserving mechanisms
+### Truncated geometric mechanisms
 
 ``` r
 counts <- c(10, 15, 20)
-noisy  <- range_preserving_mechanism(
+noisy  <- truncated_geometric_mechanism(
   counts      = counts,
   n           = 50,
   total_epsilon = 1,

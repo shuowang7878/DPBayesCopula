@@ -5,11 +5,11 @@
     return(.bayesna_stan_env$model)
   }
   
-  stan_file <- system.file("stan", "DPCopula_BayesNA.stan", package = "DPCopula")
+  stan_file <- system.file("stan", "BayesNA.stan", package = "DPBayesCopula")
   if (stan_file == "")
-    stop("Stan model file 'DPCopula_BayesNA.stan' not found.")
+    stop("Stan model file 'BayesNA.stan' not found.")
   
-  message("Compiling Stan model DPCopula_BayesNA.stan ...")
+  message("Compiling Stan model BayesNA.stan ...")
   .bayesna_stan_env$model <- rstan::stan_model(stan_file)
   
   .bayesna_stan_env$model

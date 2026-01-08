@@ -110,7 +110,7 @@
 #'
 #' @keywords internal
 .reconstruct_matrix_from_pairs <- function(pair_values,
-                                              diag_value = NA_real_) {
+                                           diag_value = NA_real_) {
   pair_values <- unlist(pair_values)
   
   if (is.null(names(pair_values))) {

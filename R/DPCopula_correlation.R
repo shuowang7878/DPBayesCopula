@@ -27,24 +27,21 @@
 #' @param cores Number of CPU cores for Stan (default 1).
 #'
 #' @return A list containing:
-#'   \describe{
-#'     \item{mean}{Posterior mean correlation matrix, i.e. estimated 
-#'     differentially private \eqn{p \times p} correlation matrix.}
-#'     \item{sd}{Posterior standard deviation matrix.}
-#'     \item{ci_lower}{2.5\% elementwise posterior quantiles.}
-#'     \item{ci_upper}{97.5\% elementwise posterior quantiles.}
-#'     \item{samples}{Posterior samples of the correlation matrix,
-#'     an array of dimension \code{(iter_sampling * chains) x p x p}.}
-#'     \item{dp}{A list with differential privacy metadata, including
-#'       \code{epsilon}, \code{epsilon_per_pair}, \code{sensitivity}[].}
-#'   }
+#' \itemize{
+#'   \item \code{mean}: Posterior mean correlation matrix (p x p).
+#'   \item \code{sd}: Posterior standard deviation matrix.
+#'   \item \code{ci_lower}: 2.5 percent elementwise posterior quantiles.
+#'   \item \code{ci_upper}: 97.5 percent elementwise posterior quantiles.
+#'   \item \code{samples}: Posterior samples of the correlation matrix.
+#'   \item \code{dp}: A list with differential privacy metadata.
+#' }
 #'
 #' @examples
 #' \dontrun{
-#'   set.seed(123)
-#'   X <- matrix(rnorm(300), ncol = 3)
-#'   fit <- bayes_noiseaware(X, epsilon = 1, iter_sampling = 500, iter_warmup = 500)
-#'   fit$mean
+#' set.seed(123)
+#' X <- matrix(rnorm(300), ncol = 3)
+#' fit <- bayes_noiseaware(X, epsilon = 1, iter_sampling = 500, iter_warmup = 500)
+#' fit$mean
 #' }
 #'
 #' @export
@@ -127,7 +124,7 @@ bayes_noiseaware <- function(
   )
   
   ## Fit Bayesian model
-  fit <- sampling(
+  fit <- rstan::sampling(
     model,
     data   = stan_data,
     warmup = iter_warmup,
@@ -138,7 +135,7 @@ bayes_noiseaware <- function(
   )
   
   ## Extract posterior draws
-  draws <- extract(fit, pars = "R")$R
+  draws <- rstan::extract(fit, pars = "R")$R
   dimnames(draws) <- list(NULL, colnames(data), colnames(data))
   
   ## Posterior summaries
@@ -177,7 +174,7 @@ bayes_noiseaware <- function(
 #' into "low" and "high" groups using the sample median with random
 #' tie-breaking so that exactly \code{ceil(n/2)} observations fall into the
 #' "high" group. Pairwise high–high counts are then perturbed using one of three
-#' range-preserving mechanisms (RTG, TGM, BTGM). The resulting noisy statistics
+#' truncated geometric mechanisms (RTG, TGM, BTGM). The resulting noisy statistics
 #' are treated as if they were true counts, yielding a noise-naive likelihood
 #' estimator of the copula correlations.
 #'
@@ -188,12 +185,24 @@ bayes_noiseaware <- function(
 #' @param seed Optional random seed (affects DP noise and tie-breaking).
 #'
 #' @return A list with components:
-#'   \describe{
-#'     \item{estimation}{Estimated \eqn{p \times p} correlation matrix
-#'     (positive-semidefinite).}
-#'     \item{dp}{List containing \code{epsilon}, \code{epsilon_per_pair},
-#'       and \code{sensitivity}.}
-#'   }
+#' \itemize{
+#'   \item \code{estimation}: Estimated p x p correlation matrix (positive-semidefinite).
+#'   \item \code{dp}: List containing epsilon, epsilon_per_pair, and sensitivity.
+#' }
+#'
+#' @examples
+#' set.seed(123)
+#' n  <- 200
+#' p  <- 3
+#' X  <- matrix(rnorm(n * p), ncol = p)
+#' colnames(X) <- paste0("X", seq_len(p))
+#'
+#' fit_mle <- mle_noise_naive(
+#'   data    = X,
+#'   epsilon = 1,
+#'   method  = "RTG"
+#' )
+#' fit_mle$estimation   # DP correlation matrix
 #'
 #' @export
 mle_noise_naive <- function(
@@ -241,8 +250,8 @@ mle_noise_naive <- function(
   ## Number of observations assigned to the “high” group
   n_half <- floor((n + 1L) / 2L)
   
-  ## Apply range-preserving DP noise to the vector of counts
-  noisy_counts <- range_preserving_mechanism(
+  ## Apply truncated geometric DP noise to the vector of counts
+  noisy_counts <- truncated_geometric_mechanism(
     counts       = pair_counts,
     n            = n_half,
     epsilon      = eps_pair,
